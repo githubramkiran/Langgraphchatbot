@@ -2,4 +2,4 @@ langchain
 langgraph 
 fastapi 
 uvicorn
-"langchain[google-genai]"
+langchain-google-genai
