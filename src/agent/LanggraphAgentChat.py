@@ -54,7 +54,7 @@ async def chat_endpoint(request: ChatRequest):
         # Prepare input state
         input_state = {"messages": [HumanMessage(content=request.message)]}
         #print('request.message:',request.message)
-        logger.info('request message:',request.message)
+        logger.info(f"request message:"{request.message}")
         # Prepare config for state persistence
         config = {"configurable": {"thread_id": request.thread_id}}
 
@@ -64,7 +64,7 @@ async def chat_endpoint(request: ChatRequest):
 
         # Extract the last message content
         last_message = result["messages"][-1].content
-        logger.info('response:',last_message)
+        logger.info(f"response:"{last_message}")
         return {"response": last_message, "thread_id": request.thread_id}
 
     except Exception as e:
@@ -74,4 +74,4 @@ async def chat_endpoint(request: ChatRequest):
 if __name__ == "__main__":
     import uvicorn
     #uvicorn.run("LanggraphAgentChat:app", host="127.0.0.1", port=8000,reload=True)
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
