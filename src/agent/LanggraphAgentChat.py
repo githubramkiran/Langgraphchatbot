@@ -10,6 +10,15 @@ import getpass
 from langchain.chat_models import init_chat_model
 from langchain_google_genai import ChatGoogleGenerativeAI
 
+import logging
+import sys
+
+# Configure logger to output info messages to stdout for Render
+logging.basicConfig(format="%(message)s", stream=sys.stdout, level=logging.INFO)
+logger = logging.getLogger("LanggraphChatbot_APP")
+logger.info("Info - Application initialized successfully")
+
+
 if not os.environ.get("GOOGLE_API_KEY"):
   os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter API key for Google Gemini: ")
 #llm = init_chat_model("google_genai:gemini-2.5-flash-lite")
@@ -44,7 +53,8 @@ async def chat_endpoint(request: ChatRequest):
     try:
         # Prepare input state
         input_state = {"messages": [HumanMessage(content=request.message)]}
-
+        #print('request.message:',request.message)
+        logger.info('request message:',request.message)
         # Prepare config for state persistence
         config = {"configurable": {"thread_id": request.thread_id}}
 
@@ -54,6 +64,7 @@ async def chat_endpoint(request: ChatRequest):
 
         # Extract the last message content
         last_message = result["messages"][-1].content
+        logger.info('response:',last_message)
         return {"response": last_message, "thread_id": request.thread_id}
 
     except Exception as e:
